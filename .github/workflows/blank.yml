@@ -1,0 +1,27 @@
+name: Create .exe from Python code
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Extract version from commit message
+      run: |
+        $COMMIT_MESSAGE = ${{ github.event.head_commit.message }}
+        $VERSION = (echo "$COMMIT_MESSAGE" | grep -Eo "v[0-9.]+")
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
+        draft: false
+        prerelease: false

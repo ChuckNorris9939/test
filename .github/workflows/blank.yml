@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Extract version from commit message
       run: |
-        $COMMIT_MESSAGE = ${{ github.event.head_commit.message }}
+        $COMMIT_MESSAGE = "${{ github.event.head_commit.message }}"
         Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+"
         $VERSION = Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+"
     - name: Create release

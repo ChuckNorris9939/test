@@ -7,14 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
     - name: Extract version from commit message
       run: |
+        Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+"
         $COMMIT_MESSAGE = ${{ github.event.head_commit.message }}
-        $VERSION = (echo "$COMMIT_MESSAGE" | grep -Eo "v[0-9.]+")
+        $VERSION = Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+"
     - name: Create release
       id: create_release
       uses: actions/create-release@v1

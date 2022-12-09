@@ -14,7 +14,8 @@ jobs:
       run: |
         $COMMIT_MESSAGE = "${{ github.event.head_commit.message }}"
         Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+"
-        $VERSION = Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+"
+        $VERSION = Write-Output $COMMIT_MESSAGE | Select-String -AllMatches -Pattern "v[0-9.]+" | Out-File -FilePath $env:GITHUB_ENV
+        echo ("VERSION=" + $env:GITHUB_REF.replace('refs/heads/', '')) >> $env:GITHUB_ENV
     - name: Create release
       id: create_release
       uses: actions/create-release@v1
